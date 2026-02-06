@@ -1,5 +1,6 @@
 package com.green.boardauth.configuration.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,10 +9,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // @Configuration 애노테이션 아래에 있는 @Bean은 무조건 싱글톤이다.
 @Configuration //빈등록
+@RequiredArgsConstructor
 public class WebSecurityConfiguration {
+
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
     @Bean //메소드 호출로 리턴값 객체를 빈등록하게 된다.
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -22,8 +27,10 @@ public class WebSecurityConfiguration {
                 //인가처리 (권한처리)
 
                 //아래 내용은 (POST) /api/board 로 요청이 올 때는 반드시 로그인이 되어있어야 한다.
-                .authorizeHttpRequests( req -> req.requestMatchers(HttpMethod.POST, "/api/board").authenticated() )
-
+                .authorizeHttpRequests( req -> req.requestMatchers(HttpMethod.POST, "/api/board").authenticated()
+                                               .anyRequest().permitAll() //나머지 요청에 대해서는 허용하겠다.
+                )
+                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
