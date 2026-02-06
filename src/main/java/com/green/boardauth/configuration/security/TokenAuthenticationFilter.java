@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,6 +24,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("req-uri: {}", request.getRequestURI()); //요청 주소가 로그에 출력
 
-
+        //쿠키에 AT가 없었다. null 리턴
+        //쿠키에 AT가 있었다 주소값이 넘어온다.
+        Authentication authentication = jwtTokenManager.getAuthentication(request);
+        if(authentication != null) {  //로그인 상태
+            SecurityContextHolder.getContext().setAuthentication(authentication); //시큐리티 인증처리가 완료!!
+        }
+        //다음 필터에게 req, res 전달
+        filterChain.doFilter(request, response);
     }
 }
