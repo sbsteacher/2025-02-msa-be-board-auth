@@ -64,7 +64,7 @@ public class JwtTokenProvider {
         String json = claims.get(constJwt.getClaimKey(), String.class);
 
         //JSON > Object, json문자열을 JwtUser 객체로 변환
-        return null;
+        return objectMapper.readValue(json, JwtUser.class);
     }
 
     //JWT의 payload에 담겨져있는 Claim들을 리턴한다.

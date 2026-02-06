@@ -2,11 +2,13 @@ package com.green.boardauth.configuration.security;
 
 import com.green.boardauth.configuration.constants.ConstJwt;
 import com.green.boardauth.configuration.model.JwtUser;
+import com.green.boardauth.configuration.model.UserPrincipal;
 import com.green.boardauth.configuration.util.MyCookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -66,9 +68,10 @@ public class JwtTokenManager { //인증 처리 총괄
         if(accessToken == null) { return null; }
         //쿠키에 AT이 있다. JWT에 담았던 JwtUser객체를 다시 빼낸다.
         JwtUser jwtUser = jwtTokenProvider.getJwtUserFromToken(accessToken);
+        //import com.green.boardauth.configuration.model.UserPrincipal;
+        UserPrincipal userPrincipal = new UserPrincipal(jwtUser);
 
-
-        return null;
+        return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
     }
 
 }
