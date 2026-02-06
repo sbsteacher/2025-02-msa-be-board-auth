@@ -17,9 +17,9 @@ public class ConstJwt {
     private final String accessTokenCookieName;
     private final String accessTokenCookiePath;
     private final int accessTokenCookieValiditySeconds;
-    private final int accessTokenValidityMilliseconds;
+    private final long accessTokenValidityMilliseconds;
     private final String refreshTokenCookieName;
     private final String refreshTokenCookiePath;
     private final int refreshTokenCookieValiditySeconds;
-    private final int refreshTokenValidityMilliseconds;
+    private final long refreshTokenValidityMilliseconds;
 }

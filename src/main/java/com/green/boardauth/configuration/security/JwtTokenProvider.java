@@ -32,10 +32,10 @@ public class JwtTokenProvider {
     }
 
     public String generateRefreshToken(JwtUser jwtUser) {
-        return "";
+        return generateToken( jwtUser, constJwt.getRefreshTokenValidityMilliseconds() );
     }
 
-    //JWT 문자열을 만드는 메소드
+    //JWT(문자열)을 만드는 메소드, 암호화된 문자열(데이터, 토큰만료시간)
     public String generateToken(JwtUser jwtUser, long tokenValidityMilliSeconds) {
         Date now = new Date(); // import java.util.Date;
         return Jwts.builder()
