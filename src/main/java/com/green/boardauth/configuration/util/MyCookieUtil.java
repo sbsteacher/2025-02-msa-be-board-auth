@@ -25,10 +25,18 @@ public class MyCookieUtil {
 
     public String getValue(HttpServletRequest req, String key) {
         Cookie cookie = getCookie(req, key);
-        return null;
+        return cookie == null ? null : cookie.getValue();
     }
 
     public Cookie getCookie(HttpServletRequest req, String key) {
+        Cookie[] cookies = req.getCookies();
+        if( cookies != null && cookies.length > 0 ) { //쿠키에 뭔가 담겨져 있다면
+            for( Cookie c : cookies ) {
+                if(c.getName().equals(key)) { //key이름으로 담겨진 쿠키가 있니?
+                    return c;
+                }
+            }
+        }
         return null;
     }
 }

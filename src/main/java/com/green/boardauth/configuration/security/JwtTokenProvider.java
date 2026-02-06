@@ -3,6 +3,7 @@ package com.green.boardauth.configuration.security;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.green.boardauth.configuration.constants.ConstJwt;
 import com.green.boardauth.configuration.model.JwtUser;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -28,7 +29,7 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(JwtUser jwtUser) {
-        return "";
+        return generateToken( jwtUser, constJwt.getAccessTokenValidityMilliseconds() );
     }
 
     public String generateRefreshToken(JwtUser jwtUser) {
@@ -46,7 +47,7 @@ public class JwtTokenProvider {
                 .issuer( constJwt.getIssuer() )
                 .issuedAt( now )  //JWT만든 일시 (토큰 생성일시)
                 .expiration( new Date(now.getTime() + tokenValidityMilliSeconds) ) //JWT종료 일시 (토큰 만료일시)
-                .claim( constJwt.getClaimKey(), makeClaimByUserToJson(jwtUser) )
+                .claim( constJwt.getClaimKey(), makeClaimByUserToJson(jwtUser) ) //signedUser 키값으로 JwtUser객체를 JSON으로 변환하여 담았다.
 
                 .signWith(secretKey) //signature
                 .compact();
@@ -56,5 +57,23 @@ public class JwtTokenProvider {
         return objectMapper.writeValueAsString(jwtUser);  //객체 > JSON문자열로 변환
     }
 
+    public JwtUser getJwtUserFromToken(String token) {
+        Claims claims = getClaims(token);
 
+        //signedUser 키값으로 담겨져있는 value를 String타입으로 리턴해 줘~
+        String json = claims.get(constJwt.getClaimKey(), String.class);
+
+        //JSON > Object, json문자열을 JwtUser 객체로 변환
+        return null;
+    }
+
+    //JWT의 payload에 담겨져있는 Claim들을 리턴한다.
+    private Claims getClaims(String token) {
+        return Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+    }
 }
