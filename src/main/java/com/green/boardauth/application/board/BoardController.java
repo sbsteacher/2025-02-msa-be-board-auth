@@ -25,6 +25,9 @@ public class BoardController {
         log.info("통신됐다!!");
         log.info("signedUserId: {}", userPrincipal.getSignedUserId());
         log.info("req: {}", req);
-        return null;
+        req.setUserId( userPrincipal.getSignedUserId() );
+        int result = boardService.postBoard(req);
+        String message = result == 1 ? "등록 성공" : "등록 실패";
+        return new ResultResponse<>(message, result);
     }
 }
