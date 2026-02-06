@@ -23,7 +23,7 @@ public class UserController {
     private final JwtTokenManager jwtTokenManager;
 
     @PostMapping("/signup")
-    public ResultResponse<Integer> signUp(@RequestBody UserSignUpReq req) {
+    public ResultResponse<?> signUp(@RequestBody UserSignUpReq req) {
         log.info("req: {}", req);
         int result = userService.signUp(req);
         return new ResultResponse<>("회원가입 성공", result);
