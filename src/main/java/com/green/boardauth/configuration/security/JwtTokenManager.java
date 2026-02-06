@@ -16,8 +16,19 @@ public class JwtTokenManager { //인증 처리 총괄
     private final MyCookieUtil myCookieUtil;
     private final JwtTokenProvider jwtTokenProvider;
 
+    public void issue(HttpServletResponse res, JwtUser jwtUser) {
+        setAccessTokenInCookie(res, jwtUser);
+        setRefreshTokenInCookie(res, jwtUser);
+    }
+
     public void setAccessTokenInCookie(HttpServletResponse res, JwtUser jwtUser) {
-        String accessToken = ??;
+        String accessToken = jwtTokenProvider.generateAccessToken(jwtUser);
+        setAccessTokenInCookie(res, accessToken);
+    }
+
+    public void setRefreshTokenInCookie(HttpServletResponse res, JwtUser jwtUser) {
+        String refreshToken = jwtTokenProvider.generateRefreshToken(jwtUser);
+        setRefreshTokenInCookie(res, refreshToken);
     }
 
     //AT를 쿠키에 담는다.
