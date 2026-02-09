@@ -28,7 +28,7 @@ public class WebSecurityConfiguration {
 
                 //아래 내용은 (POST) /api/board 로 요청이 올 때는 반드시 로그인이 되어있어야 한다.
                 .authorizeHttpRequests( req -> req.requestMatchers(HttpMethod.POST, "/api/board").authenticated()
-                                               .anyRequest().permitAll() //나머지 요청에 대해서는 허용하겠다.
+                                                  .anyRequest().permitAll() //나머지 요청에 대해서는 허용하겠다.
                 )
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

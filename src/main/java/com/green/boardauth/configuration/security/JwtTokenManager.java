@@ -74,4 +74,16 @@ public class JwtTokenManager { //인증 처리 총괄
         return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
     }
 
+    public void deleteAccessTokenInCookie(HttpServletResponse res) {
+        myCookieUtil.deleteCookie(res, constJwt.getAccessTokenCookieName(), constJwt.getAccessTokenCookiePath());
+    }
+
+    public void deleteRefreshTokenInCookie(HttpServletResponse res) {
+        myCookieUtil.deleteCookie(res, constJwt.getRefreshTokenCookieName(), constJwt.getRefreshTokenCookiePath());
+    }
+
+    public void signOut(HttpServletResponse res) {
+        deleteAccessTokenInCookie(res);
+        deleteRefreshTokenInCookie(res);
+    }
 }
