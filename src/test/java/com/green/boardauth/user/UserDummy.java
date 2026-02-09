@@ -32,7 +32,6 @@ public class UserDummy extends Dummy {
             req.setNm(nm);
             req.setUpw(pw);
             req.setGender(gender);
-
             userMapper.signUp(req);
         }
         sqlSession.flushStatements();
