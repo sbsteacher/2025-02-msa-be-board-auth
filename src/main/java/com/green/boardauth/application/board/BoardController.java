@@ -1,5 +1,6 @@
 package com.green.boardauth.application.board;
 
+import com.green.boardauth.application.board.model.BoardGetMaxPageReq;
 import com.green.boardauth.application.board.model.BoardGetReq;
 import com.green.boardauth.application.board.model.BoardGetRes;
 import com.green.boardauth.application.board.model.BoardPostReq;
@@ -37,5 +38,12 @@ public class BoardController {
         log.info("req: {}", req);
         List<BoardGetRes> list = boardService.getBoardList(req);
         return new ResultResponse<>( String.format("%d rows", list.size()), list );
+    }
+
+    @GetMapping("max_page")
+    public ResultResponse<?> getBoardMaxPage(@ModelAttribute BoardGetMaxPageReq req) {
+        log.info("req: {}", req);
+        int maxPage = boardService.getBoardMaxPage(req);
+        return new ResultResponse<>( String.format("maxPage: %d", maxPage), maxPage );
     }
 }

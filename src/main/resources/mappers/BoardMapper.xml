@@ -18,7 +18,15 @@
                OR b.contents LIKE '%${searchText}%'
         </if>
         ORDER BY b.id DESC
-        LIMIT #{startIdx}, #{size};
+        LIMIT #{startIdx}, #{size}
+    </select>
+
+    <select id="findMaxPage">
+        SELECT ceil(COUNT(1) / #{size}) FROM board
+        <if test=" searchText != null and searchText != '' ">
+            WHERE title LIKE '%${searchText}%'
+               OR contents LIKE '%${searchText}%'
+        </if>
     </select>
 
 </mapper>

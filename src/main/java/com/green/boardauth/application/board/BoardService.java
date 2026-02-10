@@ -1,5 +1,6 @@
 package com.green.boardauth.application.board;
 
+import com.green.boardauth.application.board.model.BoardGetMaxPageReq;
 import com.green.boardauth.application.board.model.BoardGetReq;
 import com.green.boardauth.application.board.model.BoardGetRes;
 import com.green.boardauth.application.board.model.BoardPostReq;
@@ -21,5 +22,9 @@ public class BoardService {
 
     public List<BoardGetRes> getBoardList(BoardGetReq req) {
         return boardMapper.findAll(req);
+    }
+
+    public int getBoardMaxPage(BoardGetMaxPageReq req) {
+        return boardMapper.findMaxPage(req);
     }
 }
