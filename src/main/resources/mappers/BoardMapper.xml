@@ -8,4 +8,17 @@
              , user_id = #{userId}
     </insert>
 
+    <select id="findAll">
+        SELECT b.id, b.title, b.created_at, u.nm
+        FROM board b
+        INNER JOIN user u
+        ON u.id = b.user_id
+        <if test=" searchText != null and searchText != '' ">
+            WHERE b.title LIKE '%${searchText}%'
+               OR b.contents LIKE '%${searchText}%'
+        </if>
+        ORDER BY b.id DESC
+        LIMIT #{startIdx}, #{size};
+    </select>
+
 </mapper>
