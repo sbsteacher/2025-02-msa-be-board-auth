@@ -20,14 +20,14 @@ public class BoardController {
     //import com.green.boardauth.configuration.model.UserPrincipal;
     @PostMapping
     public ResultResponse<?> postBoard(@AuthenticationPrincipal UserPrincipal userPrincipal
-                                     , @RequestBody BoardPostReq req) {
+                                     , @RequestBody BoardPostPutReq req) {
         log.info("통신됐다!!");
         log.info("signedUserId: {}", userPrincipal.getSignedUserId());
         log.info("req: {}", req);
         req.setUserId( userPrincipal.getSignedUserId() );
-        int result = boardService.postBoard(req);
-        String message = result == 1 ? "등록 성공" : "등록 실패";
-        return new ResultResponse<>(message, result);
+        long id = boardService.postBoard(req);
+        String message = id > 0 ? "등록 성공" : "등록 실패";
+        return new ResultResponse<>(message, id);
     }
 
     @GetMapping
@@ -51,9 +51,18 @@ public class BoardController {
         return new ResultResponse<>( "조회 성공", res );
     }
 
+    @PutMapping
+    public ResultResponse<?> putBoard(@AuthenticationPrincipal UserPrincipal userPrincipal
+            , @RequestBody BoardPostPutReq req) {
+        req.setUserId( userPrincipal.getSignedUserId() );
+        log.info("req: {}", req);
+        boardService.putBoard(req);
+        return new ResultResponse<>("수정 성공", req.getId());
+    }
+
     @DeleteMapping
     public ResultResponse<?> delBoard(@AuthenticationPrincipal UserPrincipal userPrincipal
-                                      , @ModelAttribute BoardDelReq req) {
+                                    , @ModelAttribute BoardDelReq req) {
         req.setSignedUserId( userPrincipal.getSignedUserId() ); //로그인한 사용자의 id값 담기
         log.info("req: {}", req);
         int result = boardService.delBoard(req);

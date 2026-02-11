@@ -13,8 +13,9 @@ import java.util.List;
 public class BoardService {
     private final BoardMapper boardMapper;
 
-    public int postBoard(BoardPostReq req) {
-        return boardMapper.save(req);
+    public long postBoard(BoardPostPutReq req) {
+        int result = boardMapper.save(req);
+        return req.getId();
     }
 
     public List<BoardGetRes> getBoardList(BoardGetReq req) {
@@ -27,6 +28,10 @@ public class BoardService {
 
     public BoardGetOneRes getBoard(long id) {
         return boardMapper.findById(id);
+    }
+
+    public void putBoard(BoardPostPutReq req) {
+        boardMapper.modify(req);
     }
 
     public int delBoard(BoardDelReq req) {

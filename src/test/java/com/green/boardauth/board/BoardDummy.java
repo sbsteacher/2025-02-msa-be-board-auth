@@ -2,7 +2,7 @@ package com.green.boardauth.board;
 
 import com.green.boardauth.Dummy;
 import com.green.boardauth.application.board.BoardMapper;
-import com.green.boardauth.application.board.model.BoardPostReq;
+import com.green.boardauth.application.board.model.BoardPostPutReq;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class BoardDummy extends Dummy {
                 System.out.printf("contents: %s\n", contents);
                 System.out.printf("userId: %d\n", userId);
 
-                BoardPostReq req = new BoardPostReq();
+                BoardPostPutReq req = new BoardPostPutReq();
                 req.setTitle(title);
                 req.setContents(contents);
                 req.setUserId(userId);
