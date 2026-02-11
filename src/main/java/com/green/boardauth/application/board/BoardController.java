@@ -1,9 +1,6 @@
 package com.green.boardauth.application.board;
 
-import com.green.boardauth.application.board.model.BoardGetMaxPageReq;
-import com.green.boardauth.application.board.model.BoardGetReq;
-import com.green.boardauth.application.board.model.BoardGetRes;
-import com.green.boardauth.application.board.model.BoardPostReq;
+import com.green.boardauth.application.board.model.*;
 import com.green.boardauth.configuration.model.ResultResponse;
 import com.green.boardauth.configuration.model.UserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +42,21 @@ public class BoardController {
         log.info("req: {}", req);
         int maxPage = boardService.getBoardMaxPage(req);
         return new ResultResponse<>( String.format("maxPage: %d", maxPage), maxPage );
+    }
+
+    @GetMapping("{id}")
+    public ResultResponse<?> getBoard(@PathVariable long id) {
+        log.info("id: {}", id);
+        BoardGetOneRes res = boardService.getBoard(id);
+        return new ResultResponse<>( "조회 성공", res );
+    }
+
+    @DeleteMapping
+    public ResultResponse<?> delBoard(@AuthenticationPrincipal UserPrincipal userPrincipal
+                                      , @ModelAttribute BoardDelReq req) {
+        req.setSignedUserId( userPrincipal.getSignedUserId() ); //로그인한 사용자의 id값 담기
+        log.info("req: {}", req);
+        int result = boardService.delBoard(req);
+        return new ResultResponse<>( result == 1 ? "삭제 성공" : "삭제 권한이 없습니다.", result );
     }
 }

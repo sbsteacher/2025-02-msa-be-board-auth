@@ -1,9 +1,6 @@
 package com.green.boardauth.application.board;
 
-import com.green.boardauth.application.board.model.BoardGetMaxPageReq;
-import com.green.boardauth.application.board.model.BoardGetReq;
-import com.green.boardauth.application.board.model.BoardGetRes;
-import com.green.boardauth.application.board.model.BoardPostReq;
+import com.green.boardauth.application.board.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,5 +23,13 @@ public class BoardService {
 
     public int getBoardMaxPage(BoardGetMaxPageReq req) {
         return boardMapper.findMaxPage(req);
+    }
+
+    public BoardGetOneRes getBoard(long id) {
+        return boardMapper.findById(id);
+    }
+
+    public int delBoard(BoardDelReq req) {
+        return boardMapper.deleteById(req);
     }
 }

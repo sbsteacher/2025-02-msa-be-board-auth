@@ -29,4 +29,17 @@
         </if>
     </select>
 
+    <select id="findById">
+        SELECT b.id, b.title, b.contents, b.created_at, b.user_id, u.nm
+        FROM board b
+        INNER JOIN user u
+        ON u.id = b.user_id
+        WHERE b.id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM board
+         WHERE id = #{id}
+           AND user_id = #{signedUserId}
+    </delete>
 </mapper>
