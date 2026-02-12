@@ -40,6 +40,13 @@
         WHERE b.id = #{id}
     </select>
 
+    <select id="findAllTitleBySearchText">
+        SELECT DISTINCT title
+          FROM board
+         WHERE title LIKE CONCAT(#{searchText}, '%')
+         LIMIT 10
+    </select>
+
     <update id="modify">
         UPDATE board
            SET title = #{title}

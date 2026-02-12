@@ -51,9 +51,15 @@ public class BoardController {
         return new ResultResponse<>( "조회 성공", res );
     }
 
+    @GetMapping("related_search")
+    public ResultResponse<?> getRelatedTitles(@RequestParam("search_text") String searchText) {
+        List<String> list = boardService.getRelatedTitles(searchText);
+        return new ResultResponse<>(String.format("%s rows", list.size()), list);
+    }
+
     @PutMapping
     public ResultResponse<?> putBoard(@AuthenticationPrincipal UserPrincipal userPrincipal
-            , @RequestBody BoardPostPutReq req) {
+                                    , @RequestBody BoardPostPutReq req) {
         req.setUserId( userPrincipal.getSignedUserId() );
         log.info("req: {}", req);
         boardService.putBoard(req);

@@ -30,6 +30,10 @@ public class BoardService {
         return boardMapper.findById(id);
     }
 
+    public List<String> getRelatedTitles(String searchText) {
+        return boardMapper.findAllTitleBySearchText(searchText);
+    }
+
     public void putBoard(BoardPostPutReq req) {
         boardMapper.modify(req);
     }
